@@ -1,0 +1,114 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+/* ── CIP Brand Token System ─────────────────────────────────────────────── */
+:root {
+  /* Core palette */
+  --cip-navy-deepest: #070f1c;
+  --cip-navy-dark:    #0b1929;
+  --cip-navy:         #112240;
+  --cip-navy-mid:     #1a3357;
+  --cip-gold:         #c9963e;
+  --cip-gold-light:   #e8b86d;
+  --cip-coral:        #e57149;
+  --cip-white:        #f8f5f0;
+  --cip-muted:        #8a9bbf;
+
+  /* Semantic aliases consumed by Relume token classes */
+  --color-background-primary:    var(--cip-navy-dark);
+  --color-background-secondary:  var(--cip-navy);
+  --color-text-primary:          var(--cip-white);
+  --color-text-secondary:        var(--cip-muted);
+  --color-text-alternative:      var(--cip-white);
+  --color-border-primary:        rgba(200, 150, 62, 0.25);
+  --color-brand-primary:         var(--cip-gold);
+  --color-brand-secondary:       var(--cip-coral);
+
+  /* Typography */
+  --font-heading: "Geist", system-ui, sans-serif;
+  --font-body:    "Geist", system-ui, sans-serif;
+
+  /* Hero gradient (used across all headers) */
+  --cip-hero-gradient: linear-gradient(
+    135deg,
+    var(--cip-navy-deepest) 0%,
+    var(--cip-navy) 40%,
+    #1a2f4a 70%,
+    #0d2035 100%
+  );
+}
+
+/* ── Base ────────────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--cip-navy-dark);
+  color: var(--cip-white);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Hero gradient placeholder ───────────────────────────────────────────── */
+/* Shown while real images are loading / not yet generated */
+.cip-hero-bg {
+  background: var(--cip-hero-gradient);
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.cip-hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 70% 50%,
+    rgba(201, 150, 62, 0.12) 0%,
+    transparent 60%
+  );
+}
+
+/* ── Image placeholder utility ───────────────────────────────────────────── */
+.cip-img-placeholder {
+  background: linear-gradient(
+    145deg,
+    var(--cip-navy) 0%,
+    var(--cip-navy-mid) 50%,
+    var(--cip-navy) 100%
+  );
+  background-size: 200% 200%;
+  animation: cip-shimmer 3s ease-in-out infinite;
+}
+
+@keyframes cip-shimmer {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ── Avatar placeholder ──────────────────────────────────────────────────── */
+.cip-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--cip-gold) 0%, var(--cip-coral) 100%);
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--cip-navy-dark);
+  letter-spacing: 0.05em;
+}
+
+/* ── Accent glow on section headings ─────────────────────────────────────── */
+.cip-gold-accent {
+  color: var(--cip-gold);
+}
+
+/* ── Gold shimmer underline on key CTAs ──────────────────────────────────── */
+section a:hover,
+section button:hover {
+  transition: opacity 0.2s ease;
+}
