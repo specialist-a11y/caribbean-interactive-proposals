@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { InteractiveTimeline } from "./InteractiveTimeline";
-import { FaCheck, FaCreditCard, FaPenNib, FaBuilding, FaShieldAlt, FaLeaf, FaServer } from "react-icons/fa";
+import { FaCheck, FaCreditCard, FaPenNib, FaBuilding, FaShieldAlt, FaLeaf, FaServer, FaUniversity } from "react-icons/fa";
 
 interface Addon {
   id: string;
@@ -25,6 +25,7 @@ export function InteractiveProposal() {
   ]);
 
   const [isApproved, setIsApproved] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<"credit_card" | "bank_transfer">("bank_transfer");
 
   const toggleAddon = (id: string) => {
     if (isApproved) return;
@@ -235,25 +236,73 @@ export function InteractiveProposal() {
                   <p className="text-sm text-slate-500 mt-1">Submit your 20% deposit (${deposit.toLocaleString()}) to secure dates.</p>
                 </div>
                 
-                <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 space-y-4">
-                  <div>
-                    <label className="text-sm font-semibold text-slate-700 block mb-2">Card Number</label>
-                    <input type="text" placeholder="**** **** **** ****" className="w-full border border-slate-300 rounded-lg p-3 focus:ring-2 focus:ring-gold outline-none font-mono" />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-semibold text-slate-700 block mb-2">Expiry</label>
-                      <input type="text" placeholder="MM/YY" className="w-full border border-slate-300 rounded-lg p-3 focus:ring-2 focus:ring-gold outline-none" />
-                    </div>
-                    <div>
-                      <label className="text-sm font-semibold text-slate-700 block mb-2">CVC</label>
-                      <input type="text" placeholder="123" className="w-full border border-slate-300 rounded-lg p-3 focus:ring-2 focus:ring-gold outline-none" />
-                    </div>
-                  </div>
+                {/* Payment Method Selector */}
+                <div className="flex bg-slate-100 p-1 rounded-lg">
+                  <button 
+                    onClick={() => setPaymentMethod("bank_transfer")}
+                    className={`flex-1 py-2 text-sm font-semibold rounded-md transition-all ${paymentMethod === "bank_transfer" ? "bg-white shadow text-navy-deepest" : "text-slate-500 hover:text-slate-700"}`}
+                  >
+                    Bank Transfer
+                  </button>
+                  <button 
+                    onClick={() => setPaymentMethod("credit_card")}
+                    className={`flex-1 py-2 text-sm font-semibold rounded-md transition-all ${paymentMethod === "credit_card" ? "bg-white shadow text-navy-deepest" : "text-slate-500 hover:text-slate-700"}`}
+                  >
+                    Credit Card
+                  </button>
                 </div>
 
+                {paymentMethod === "credit_card" ? (
+                  <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 space-y-4">
+                    <div>
+                      <label className="text-sm font-semibold text-slate-700 block mb-2">Card Number</label>
+                      <input type="text" placeholder="**** **** **** ****" className="w-full border border-slate-300 rounded-lg p-3 focus:ring-2 focus:ring-gold outline-none font-mono" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm font-semibold text-slate-700 block mb-2">Expiry</label>
+                        <input type="text" placeholder="MM/YY" className="w-full border border-slate-300 rounded-lg p-3 focus:ring-2 focus:ring-gold outline-none" />
+                      </div>
+                      <div>
+                        <label className="text-sm font-semibold text-slate-700 block mb-2">CVC</label>
+                        <input type="text" placeholder="123" className="w-full border border-slate-300 rounded-lg p-3 focus:ring-2 focus:ring-gold outline-none" />
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 space-y-4">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="p-3 bg-navy-deepest text-gold rounded-lg">
+                        <FaUniversity size={24} />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-navy-deepest">Wire Transfer / ACH</h4>
+                        <p className="text-xs text-slate-500">Zero processing fees for large amounts.</p>
+                      </div>
+                    </div>
+                    <div className="space-y-3 bg-white p-4 rounded-lg border border-slate-200">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-slate-500">Bank Name</span>
+                        <span className="font-semibold text-navy-deepest">Acme Commercial Bank</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-slate-500">Account Name</span>
+                        <span className="font-semibold text-navy-deepest">Acme Build-outs LLC</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-slate-500">Routing Number</span>
+                        <span className="font-mono font-semibold text-navy-deepest">122000661</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-slate-500">Account Number</span>
+                        <span className="font-mono font-semibold text-navy-deepest">4455 6677 8899</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <button className="w-full bg-navy-deepest hover:bg-navy-mid text-white font-bold py-4 px-6 rounded-xl transition-colors flex justify-center items-center gap-2">
-                  <FaCheck /> Complete Booking
+                  <FaCheck /> {paymentMethod === "credit_card" ? "Complete Booking" : "I've Sent the Transfer"}
                 </button>
               </div>
             </div>
