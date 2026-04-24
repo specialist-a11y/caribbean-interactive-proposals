@@ -26,6 +26,7 @@ export function InteractiveProposal() {
 
   const [isApproved, setIsApproved] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<"credit_card" | "bank_transfer">("bank_transfer");
+  const [signature, setSignature] = useState("");
 
   const toggleAddon = (id: string) => {
     if (isApproved) return;
@@ -214,16 +215,36 @@ export function InteractiveProposal() {
                   <h3 className="text-xl font-bold flex items-center gap-2 text-navy-deepest">
                     <FaPenNib className="text-gold"/> Step 1: E-Signature
                   </h3>
-                  <p className="text-sm text-slate-500 mt-1">Draw or type your signature to authorize the build-out.</p>
+                  <p className="text-sm text-slate-500 mt-1">Type your signature to authorize the build-out.</p>
                 </div>
                 
-                <div className="bg-slate-50 border-2 border-dashed border-slate-300 rounded-xl h-48 flex items-center justify-center cursor-text hover:bg-slate-100 transition-colors">
-                  <span className="text-slate-400 font-medium italic">Sign here...</span>
+                <div className="bg-slate-50 border-2 border-dashed border-slate-300 rounded-xl h-48 flex items-center justify-center overflow-hidden transition-colors relative">
+                  {signature ? (
+                    <div className="text-5xl font-serif italic text-navy-deepest px-4 text-center break-words w-full" style={{ fontFamily: "'Brush Script MT', 'Caveat', cursive" }}>
+                      {signature}
+                    </div>
+                  ) : (
+                    <span className="text-slate-400 font-medium italic">Your signature will appear here...</span>
+                  )}
+                  {signature && (
+                    <button 
+                      onClick={() => setSignature("")} 
+                      className="absolute top-2 right-3 text-xs text-slate-400 hover:text-red-500"
+                    >
+                      Clear
+                    </button>
+                  )}
                 </div>
                 
                 <div className="space-y-3">
-                  <label className="text-sm font-semibold text-slate-700 block">Full Name</label>
-                  <input type="text" placeholder="John Doe" className="w-full border border-slate-300 rounded-lg p-3 focus:ring-2 focus:ring-gold outline-none" />
+                  <label className="text-sm font-semibold text-slate-700 block">Full Name (Type to Sign)</label>
+                  <input 
+                    type="text" 
+                    placeholder="John Doe" 
+                    value={signature}
+                    onChange={(e) => setSignature(e.target.value)}
+                    className="w-full border border-slate-300 rounded-lg p-3 focus:ring-2 focus:ring-gold outline-none" 
+                  />
                 </div>
               </div>
 
@@ -297,6 +318,10 @@ export function InteractiveProposal() {
                         <span className="text-slate-500">Account Number</span>
                         <span className="font-mono font-semibold text-navy-deepest">4455 6677 8899</span>
                       </div>
+                    </div>
+                    
+                    <div className="bg-navy-deepest/5 border border-navy-deepest/10 rounded-lg p-4 text-sm text-navy-deepest">
+                      <strong>Next Step:</strong> After completing the transfer, please email your payment reference ID to <a href="mailto:billing@acmebuilds.com" className="font-semibold underline text-gold">billing@acmebuilds.com</a> to expedite verification.
                     </div>
                   </div>
                 )}
